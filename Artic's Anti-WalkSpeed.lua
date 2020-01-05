@@ -1,8 +1,8 @@
-local MaxCaughts = 3 -- If Anti-Exploit detect player changing walksped that many times is going to kick the player
+local MaxCaughts = 3 -- This is max value of how many times anti-exploit can detect player exploiting.
 
-local MaxSinceLastCaughtChange = 10 -- Time which determines for how long caught value wasn't changed
+local MaxSinceLastCaughtChange = 10 -- This is max time for how long 'caughts' value wasn't changed.
 
---IMPORTANT: You can leave everything by default this Anti-Exploit is going to automatically detect what is your game's default WalkSpeed by reading the walkspeed from server side.
+--IMPORTANT: You can leave everything by default this Anti-Exploit is going to automatically detect what is your game's default WalkSpeed by reading the walk speed from server-side.
 
 --               _   _      _                      _   _     __          __   _ _     _____                     _ 
 --    /\        | | (_)    ( )         /\         | | (_)    \ \        / /  | | |   / ____|                   | |
@@ -53,6 +53,7 @@ game:GetService("Players").PlayerAdded:Connect(function(plr)
 			    end
 			  end
 			
+			if char:FindFirstChild("HumanoidRootPart") ~= nil then
 			local FirstCFrame = char:FindFirstChild("HumanoidRootPart").Position -- Get player's first position
 			wait(1)
 			local SecondCFrame = char:FindFirstChild("HumanoidRootPart").Position -- Get player9s second position after wait(1)
@@ -62,8 +63,6 @@ game:GetService("Players").PlayerAdded:Connect(function(plr)
 			if CFrameDifference < 0 then -- If difference is below 0
 				local CFrameDifference =  (FirstCFrame - SecondCFrame) * (-1) -- Change it to positive value
 			end
-			
-			
 			
 			if char:FindFirstChild("Humanoid") then --If Humanoid exists then
 				local LocalWalkspeed = char:FindFirstChild("Humanoid").WalkSpeed -- Get players local walkspeed (local walkspeed determines how many studs player create on second)
@@ -85,8 +84,19 @@ game:GetService("Players").PlayerAdded:Connect(function(plr)
 				    end
 				end
 		     end
+				 
+			  else
 				
+			if char:FindFirstChild("Humanoid") then -- If Humanoid still exsits
+					warn("Exploit detected at player: " .. plr.Name) -- warn it to console
+					plr:Kick("We caught you exploiting.") -- Kick player from game
+					-- Do whatever you want to do to player who was detected exploiting
+					if script:FindFirstChild(plr.Name) then 
+					   script[plr.Name]:Destroy() -- Destroy player from script in ServerScriptService (IMPORTANT: Make sure you keep this in this if statment)
+					   break
+				    end
+				end
+			end
 		end
-			
 	end)
 end)
