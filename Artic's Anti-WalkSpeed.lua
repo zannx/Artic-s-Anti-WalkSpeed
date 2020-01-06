@@ -42,7 +42,7 @@ game:GetService("Players").PlayerAdded:Connect(function(plr)
 	
 	plr.CharacterAdded:Connect(function(char)
 		
-		while true do
+		while char.Parent do
 			
 			SinceLastChange.Value = SinceLastChange.Value + 1
 			
